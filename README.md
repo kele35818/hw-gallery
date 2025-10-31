@@ -45,7 +45,7 @@ Markdown
 ```bash
 git clone [你的项目Git地址]
 cd [你的项目目录]
-3. 安装依赖
+### 3. 安装依赖
 推荐使用虚拟环境：
 
 Bash
@@ -62,7 +62,7 @@ pip install flask
 Bash
 
 apt install python3-flask
-4. 配置 OBS 链接
+### 4. 配置 OBS 链接
 打开 app.py 文件，将 image_urls 列表中的 URL 替换为你自己在华为云 OBS 桶中的图片链接。
 
 Python
@@ -80,23 +80,10 @@ def gallery():
     ]
     return render_template('index.html', images=image_urls)
 # ...
-5. 运行应用
+### 5. 运行应用
 Bash
 
 python3 app.py
 应用将在 http://0.0.0.0:5000 上运行。现在你可以通过 http://<你的Flexus服务器公网IP>:5000 访问你的云相册。
 
-📝 申请材料截图 (For Reviewer)
-本项目已按要求准备好以下截图材料，用于华为沃土云创计划激励申请。
 
-1. 应用运行结果 (SSH 终端)
-(请替换为你的真实截图链接)
-
-2. 应用页面结果 (浏览器访问)
-(请替换为你的真实截图链接)
-
-3. 云资源使用证明 (Flexus & OBS 控制台)
-(请替换为你的真实截图链接)
-
-📄 许可证 (License)
-本项目采用 MIT 许可证。
