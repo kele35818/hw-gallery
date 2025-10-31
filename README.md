@@ -1,6 +1,4 @@
-Markdown
-
-# 华为云创计划 - 动态云相册 (Python + Flexus + OBS)
+**# 华为云创计划 - 动态云相册 (Python + Flexus + OBS)
 
 本项目为申请 **华为沃土云创计划** 激励而创建的应用演示。
 
@@ -34,56 +32,15 @@ Markdown
 
 ## 🚀 快速开始 (Getting Started)
 
-### 1. 先决条件
+### 先决条件
 
 * Python 3.x
 * 已开通的华为云 Flexus 服务器 (已开放 5000 端口)
 * 已创建并设为“公共读”的华为云 OBS 桶
 
-### 2. 克隆项目
+### 克隆项目
 
 ```bash
 git clone [你的项目Git地址]
-cd [你的项目目录]
-### 3. 安装依赖
-推荐使用虚拟环境：
-
-Bash
-
-# 创建虚拟环境
-python3 -m venv venv
-# 激活虚拟环境
-source venv/bin/activate
-
-# 安装 Flask
-pip install flask
-或者，如果你的系统支持 (如本项目部署时所用)：
-
-Bash
-
-apt install python3-flask
-### 4. 配置 OBS 链接
-打开 app.py 文件，将 image_urls 列表中的 URL 替换为你自己在华为云 OBS 桶中的图片链接。
-
-Python
-
-# app.py
-
-# ...
-@app.route('/')
-def gallery():
-    # TODO: 把这里的URL换成你自己的OBS图片链接
-    image_urls = [
-        "[https://your-obs-bucket.com/image1.jpg](https://your-obs-bucket.com/image1.jpg)",
-        "[https://your-obs-bucket.com/image2.jpg](https://your-obs-bucket.com/image2.jpg)",
-        # ... 更多图片
-    ]
-    return render_template('index.html', images=image_urls)
-# ...
-### 5. 运行应用
-Bash
-
-python3 app.py
-应用将在 http://0.0.0.0:5000 上运行。现在你可以通过 http://<你的Flexus服务器公网IP>:5000 访问你的云相册。
-
+cd [你的项目目录]**
 
