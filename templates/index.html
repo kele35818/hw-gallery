@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>华为云创 - 我的高大上云相册</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff; /* 华为蓝 */
+            --secondary-color: #6c757d;
+            --background-dark: #222;
+            --text-light: #f8f9fa;
+            --card-bg: #343a40;
+            --border-radius: 8px;
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden; /* 防止水平滚动 */
+        }
+
+        header {
+            background: linear-gradient(to right, #0056b3, var(--primary-color));
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 10;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin: 0;
+            color: white;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        header p {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            justify-content: center;
+            align-items: stretch; /* 使卡片高度一致 */
+        }
+
+        .gallery-item {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+            transition: transform var(--transition-speed) ease-in-out, box-shadow var(--transition-speed) ease-in-out;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 250px; /* 固定图片高度 */
+            object-fit: cover; /* 裁剪图片以填充容器 */
+            display: block;
+            transition: transform 0.5s ease-in-out;
+            /* 懒加载占位符 */
+            background-color: #444;
+            background-image: linear-gradient(to right, #444 0%, #555 20%, #444 40%, #444 100%);
+            background-size: 200% 100%;
+            animation: loading-animation 1.5s infinite linear;
+        }
+
+        .gallery-item.loaded img {
+            animation: none; /* 移除加载动画 */
+            background-image: none;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-info {
+            padding: 15px;
+            text-align: center;
+            flex-grow: 1; /* 使信息部分撑满剩余空间 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .gallery-info h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            font-size: 1.3em;
+        }
+
+        .gallery-info p {
+            font-size: 0.9em;
+            color: var(--text-light);
+            opacity: 0.8;
+            margin-bottom: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 50px;
+            background-color: #1a1a1a;
+            color: rgba(255, 255, 255, 0.7);
+            border-top: 1px solid #333;
+            font-size: 0.9em;
+        }
+
+        /* Loading Animation */
+        @keyframes loading-animation {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Lightbox Overlay */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity var(--transition-speed) ease;
+        }
+
+        .lightbox-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 3em;
+            cursor: pointer;
+            background: none;
+            border: none;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            line-height: 1;
+        }
+
+        .lightbox-close:hover {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>华为云创 - 我的高大上云相册</h1>
+        <p>由华为云Flexus应用服务器 &amp; 对象存储 OBS 驱动</p>
+    </header>
+
+    <main class="container">
+        <div class="gallery-grid">
+            {% for img_url in images %}
+                <div class="gallery-item">
+                    <img data-src="{{ img_url }}" alt="云相册图片 {{ loop.index }}">
+                    <div class="gallery-info">
+                        <h3>图片 {{ loop.index }}</h3>
+                        <p>来自华为云OBS存储</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 华为云创计划 | 基于 Python Flask 构建</p>
+    </footer>
+
+    <div class="lightbox-overlay" id="lightbox">
+        <button class="lightbox-close">&times;</button>
+        <div class="lightbox-content">
+            <img src="" alt="放大图片">
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const lazyImages = document.querySelectorAll('img[data-src]');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = lightbox.querySelector('.lightbox-content img');
+            const lightboxClose = lightbox.querySelector('.lightbox-close');
+
+            // 图片懒加载
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.onload = () => {
+                            img.parentNode.classList.add('loaded'); // 添加 loaded 类，移除加载动画
+                        };
+                        observer.unobserve(img);
+                    }
+                });
+            });
+
+            lazyImages.forEach(img => {
+                imageObserver.observe(img);
+            });
+
+            // Lightbox 功能
+            galleryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const imgSrc = item.querySelector('img').src;
+                    lightboxImg.src = imgSrc;
+                    lightbox.classList.add('active');
+                    document.body.style.overflow = 'hidden'; // 禁止滚动
+                });
+            });
+
+            lightboxClose.addEventListener('click', () => {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = ''; // 恢复滚动
+            });
+
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) { // 点击背景关闭
+                    lightbox.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // ESC 键关闭 Lightbox
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                    lightbox.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
